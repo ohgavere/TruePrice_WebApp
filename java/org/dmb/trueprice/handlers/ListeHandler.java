@@ -625,10 +625,10 @@ public final class ListeHandler extends BasicHandler {
             
             log.info(
                 "Gonna try to modify list [" + lst.getLstLabel() + "] "
-                + "\n Description [" + lst.getLstDescription() + "]"
-                + "\n Membre ID[" + lst.getLstUser()+ "]"
-                + "\n Enseigne ID [" + lst.getLstEnseigne() + "]"
-                + "\n Produits IDs [" + lst.getLstProduits() + "]"
+//                + "\n Description [" + lst.getLstDescription() + "]"
+//                + "\n Membre ID[" + lst.getLstUser()+ "]"
+//                + "\n Enseigne ID [" + lst.getLstEnseigne() + "]"
+//                + "\n Produits IDs [" + lst.getLstProduits() + "]"
             );
             
             
