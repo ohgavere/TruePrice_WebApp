@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence                     http://java.sun.com/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="TruePrice_PersistenceUnit" transaction-type="JTA">
+    <!--    <class>org.dmb.trueprice.entities.generated.Sequence</class>
+    <class>org.dmb.trueprice.entities.ListesStats</class>
+    <class>org.dmb.trueprice.entities.Subcategory</class>
+    <class>org.dmb.trueprice.entities.Marque</class>
+    <class>org.dmb.trueprice.entities.Listes</class>
+    <class>org.dmb.trueprice.entities.Enseigne</class>
+    <class>org.dmb.trueprice.entities.QttDetail</class>
+    <class>org.dmb.trueprice.entities.ProduitInfo</class>
+    <class>org.dmb.trueprice.entities.ListesInfo</class>
+    <class>org.dmb.trueprice.entities.ListesResult</class>
+    <class>org.dmb.trueprice.entities.Category</class>
+    <class>org.dmb.trueprice.entities.ProduitStats</class>-->
+    <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+    <jta-data-source>TruePrice_PersistenceUnit</jta-data-source>
+    <class>org.dmb.trueprice.entities.Marque</class>
+    <class>org.dmb.trueprice.entities.Enseigne</class>
+    <class>org.dmb.trueprice.entities.ProduitInfo</class>
+    <class>org.dmb.trueprice.entities.ProduitStats</class>
+    <class>org.dmb.trueprice.entities.Subcategory</class>
+    <class>org.dmb.trueprice.entities.Category</class>
+    <class>org.dmb.trueprice.entities.Membre</class>
+    <class>org.dmb.trueprice.entities.Password</class>
+    <class>org.dmb.trueprice.entities.QttDetail</class>
+    <class>org.dmb.trueprice.entities.Liste</class>
+    <class>org.dmb.trueprice.entities.ListeInfo</class>
+    <class>org.dmb.trueprice.entities.ListeResult</class>
+    <class>org.dmb.trueprice.entities.ListeStats</class>
+    <class>org.dmb.trueprice.entities.Produit</class>
+    <properties>
+      <!--<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)" />-->
+      <!--<property name="openjpa.jdbc.DBDictionary" value="mysql" />-->
+      <!--<property name="openjpa.Log" value="DefaultLevel=INFO, Tool=INFO"/>-->
+      <property name="openjpa.Log" value="File=C:\\TFE\\Logging\\openjpa.log, DefaultLevel=TRACE, Runtime=INFO, Tool=INFO, SQL=TRACE"/>      
+      <!--<class>org.dmb.trueprice.entities.Addresse</class>-->
+      <!--<class>org.dmb.trueprice.entities.Utilisateur</class>-->
+      <!--<class>org.dmb.trueprice.entities.Password</class>-->
+      <!--    <class>org.dmb.trueprice.entities.Membre</class>
+    <class> org.dmb.trueprice.controllers.MembreJpaController</class>-->
+      <exclude-unlisted-classes>false</exclude-unlisted-classes>
+      <!--    <properties>
+            <property name="eclipselink.logging.level.sql" value="FINE"/>
+      <property name="eclipselink.logging.parameters" value="true"/>
+      <property name="openjpa.ConnectionFactoryProperties" value="MaxActive=10,MaxIdle=5,MinIdle=2,MaxWait=1800000"/>
+      <property name="openjpa.Log" value="File=T:\\temp\\TruePrice\\openjpa.new.log, DefaultLevel=TRACE, Runtime=INFO, Tool=INFO, SQL=TRACE"/>
+      TRACE, INFO, WARN, ERROR or FATAL.
+      <property name="openjpa.jdbc.DBDictionary" value="org.apache.openjpa.jdbc.sql.PostgresDictionary"/>
+      <property name="openjpa.DataCache" value="true"/>
+      <property name="openjpa.QueryCache" value="true"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/TruePrice"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>
+      <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
+    </properties>-->
+      <!--<properties>    
+    <property name="openjpa.jdbc.SynchrnozieMappings" value="buildSchema"/>
+</properties>-->
+      <!--<class>refactor.Marque</class>-->
+      <!--<class>refactor.Marque</class>-->
+    </properties>
+  </persistence-unit>
+</persistence>
