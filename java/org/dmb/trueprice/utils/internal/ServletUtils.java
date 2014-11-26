@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -304,31 +303,12 @@ public abstract class ServletUtils {
 //            SyncInitResponse initResp = GsonConverter.fromJsonInitResponse(new FileReader(new File(getPath(userMail))));
             SyncInitResponse initResp = getMemberInitResponse(userMail);
             
-            // It's not enough ...
 //            initResp.getAvailableLists().put(listeId, date);
-//            initResp.getAvailableLists().add(liste);
-            // ... we need to remove the old liste before.
-            int oldListeIndex = -1 ;
-            int ct = 0 ;
-            for ( AvailableList oldListe : initResp.getAvailableLists()) {
-                log.debug("counter test = " + ct);
-                if (oldListe.getListeId() == liste.getListeId()) {
-                    oldListeIndex = initResp.getAvailableLists().indexOf(oldListe);
-                    log.debug("Old Liste index found [" + oldListeIndex +"]");
-                    break;
-                }
-                ct++;
-            }
-            // Enelever l'ancienne liste si elle existe 
-            if (oldListeIndex >= 0) {  initResp.getAvailableLists().remove(oldListeIndex);  }
-            // Ajouter la nouvelle quoi qu'il arrive
             initResp.getAvailableLists().add(liste);
             
-            // Convertir le resultat en JSon
 //            byte[] bytes = GsonConverter.toJsonTree(initResp).getBytes();
             byte[] bytes = GsonConverter.toJson(initResp).getBytes();
             
-            // L'ecrire dans le dossier du membre
             FileUtils.writeFile(SyncInitResponseFilename, bytes ,InitContextListener.getXmlMemberFullPath(userMail));
             
         } catch (Exception e) {

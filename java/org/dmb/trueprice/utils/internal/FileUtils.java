@@ -203,7 +203,9 @@ public abstract class FileUtils {
             
             Files.write(
                 Paths.get(targetFolder + File.separator + fileName),
-                bytes, StandardOpenOption.WRITE
+                bytes,
+                StandardOpenOption.WRITE
+//                , StandardOpenOption.CREATE_NEW
             );
 
 //        } catch ( e) {

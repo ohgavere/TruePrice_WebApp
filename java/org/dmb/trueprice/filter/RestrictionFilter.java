@@ -505,12 +505,12 @@ public final class RestrictionFilter implements Filter {
         
 //        if (request.isSecure()) {
             
-//            log.info("FILTERING REQUEST ==> Request is Secure() ? >     " + request.isSecure());
+            log.info("FILTERING REQUEST ==> Request is Secure() ? >     " + request.isSecure());
             
             String scheme = "";
             scheme = request.getScheme();
             
-//            log.info("FILTERING REQUEST ==>     Scheme          is      [" + scheme + "]");
+            log.info("FILTERING REQUEST ==>     Scheme          is      [" + scheme + "]");
             
             String sslSessionId = "";
             sslSessionId = ServletUtils.getRequestAttrValue(request, ATT_SSL_SESSION_ID) ;
@@ -521,10 +521,10 @@ public final class RestrictionFilter implements Filter {
             
             if (sslSessionId != null) {
             
-//                log.info("FILTERING REQUEST ==>     ssl Session ID  is      [" + ( sslSessionId == "" ? "Value not found ...." : sslSessionId) + "]");                
+                log.info("FILTERING REQUEST ==>     ssl Session ID  is      [" + ( sslSessionId == "" ? "Value not found ...." : sslSessionId) + "]");                
                 
             } else {
-//                log.info("FILTERING REQUEST ==>     ssl Session ID  is  NULL !!");            
+                log.info("FILTERING REQUEST ==>     ssl Session ID  is  NULL !!");            
             }
             
 //            String serverPort = "" ;
@@ -533,7 +533,7 @@ public final class RestrictionFilter implements Filter {
             
 //            if (serverPort != null) {
             
-//                log.info("FILTERING REQUEST ==>     Server port     is      [" + serverPort + "]");                
+                log.info("FILTERING REQUEST ==>     Server port     is      [" + serverPort + "]");                
                 
 //            }            
             
@@ -542,7 +542,7 @@ public final class RestrictionFilter implements Filter {
             
 //            if (serverPort != null) {
             
-//                log.info("FILTERING REQUEST ==>     Request URL     is      [" + ( fullUrl == "" ? "Value not found ...." :  fullUrl) + "]");                
+                log.info("FILTERING REQUEST ==>     Request URL     is      [" + ( fullUrl == "" ? "Value not found ...." :  fullUrl) + "]");                
                 
 //            }            
             
@@ -552,7 +552,7 @@ public final class RestrictionFilter implements Filter {
 //                    request.getRemoteUser() != null && 
                 if ( ! scheme.equals("https")) {
                     
-//                    log.info("Scheme is not HTTPS : [" + scheme.toString() +"] > return false; ");
+                    log.info("Scheme is not HTTPS : [" + scheme.toString() +"] > return false; ");
                     
                     return false;
                 } else if ( serverPort.compareTo(443) != 0 && serverPort.compareTo(8443) != 0 ) {
