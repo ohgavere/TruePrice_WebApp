@@ -146,18 +146,21 @@ public class Produits_servlet extends HttpServlet {
 //            mb = ServletUtils.getUserFromSession(session, ATT_SESSION_USER);
             mb = (Membre) ServletUtils.getSessionAttrObject(session, ATT_SESSION_USER);
         }
-        
-        log.debug("Received final action = " + action);
+            
+        // Le faire pour chaque requete !!
+        // Ajoute l'url d'accès aux icones
+        request.setAttribute(att_iconDataPath,
+            // ternaire : build Path if 1st request
+            (iconPathIsOK ? iconDataPath
+//              : getIconDataPath(request) )
+            : buildIconURL(request) )
+        );    
+            
+            
+        log.info("Received final action = " + action);
         
         if (action != null && action!= "") {
-            
-            // Ajoute l'url d'accès aux icones
-            request.setAttribute(att_iconDataPath,
-                // ternaire : build Path if 1st request
-                (iconPathIsOK ? iconDataPath
-//              : getIconDataPath(request) )
-                : buildIconURL(request) )
-            );               
+           
             
             switch (action) {
                 
@@ -305,6 +308,13 @@ public class Produits_servlet extends HttpServlet {
             }
             
         } else {
+                  
+            request.setAttribute(att_ListPdt, getProductsListe());                    
+                
+            request.setAttribute(att_ShortListCatg, getCategoriesIdentifiers());                    
+                                       
+            request.setAttribute(att_ListSCatg, getSubCategories());                    
+            
             this.getServletContext().getRequestDispatcher(VIEW_PRODUITS).forward(request, response);
         }
     }

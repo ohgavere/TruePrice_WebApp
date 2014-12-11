@@ -76,6 +76,7 @@ import org.dmb.trueprice.utils.internal.ServletUtils;
             "/sync",
             "/sync/getter",
             "/sync/setter"
+//            "/sync/icons"
         })
 public class Sync_servlet extends HttpServlet {
      
@@ -149,6 +150,7 @@ public class Sync_servlet extends HttpServlet {
     // For initContextListener.getEnvEntryValue()
     private static final String att_iconDataPath = "iconDataPath";    
     private String iconDataPath = "";        
+    private String fullIconDataPath = "";        
     
     private String xmlMemberDataFolder = "xmlMemberDataFolder"; 
     private String xmlMemberPath = "" ;
@@ -159,6 +161,7 @@ public class Sync_servlet extends HttpServlet {
     private static final String URL_SYNC = "/sync" ;
     private static final String URL_SYNC_GETTER = "/getter" ;
     private static final String URL_SYNC_SETTER = "/setter" ;
+//    private static final String URL_SYNC_ICON = "/icons" ;
        
     // Request & Session attributes
     public static final String ATT_DATA = "data";
@@ -170,8 +173,10 @@ public class Sync_servlet extends HttpServlet {
     // Servlet attributes for working
     private static HashMap<Long, String>   mapProduitIcon  ;
     
+    private String currentUserMail = "" ;
+    public String getCurrentUserMail() {return currentUserMail;}
+    
 /**
- * 
  * @param config
  * @throws ServletException 
  */
@@ -179,7 +184,7 @@ public class Sync_servlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config); //To change body of generated methods, choose Tools | Templates.
         
-        iconDataPath = InitContextListener.getEnvEntryValue(att_iconDataPath);    
+        iconDataPath  = InitContextListener.getEnvEntryValue(att_iconDataPath);    
         xmlMemberDataFolder = InitContextListener.getEnvEntryValue(xmlMemberDataFolder);    
                 
         pdtGenForm      = new ProductGeneriqHandler(pdtBaseCtl,iconDataPath , sctgCtl, ctgCtl);
@@ -224,8 +229,7 @@ public class Sync_servlet extends HttpServlet {
         Membre mb = (Membre) ServletUtils.getSessionAttrObject(session, ATT_SESSION_USER);         
         
         // Ajoute l'url d'accès aux icones
-        buildIconURL(request);
-//        request.setAttribute(att_iconDataPath,buildIconURL(request));
+        fullIconDataPath = buildIconURL(request);
 
         // L'action/page demandee
         String action = findAction(request.getRequestURI());
@@ -242,6 +246,10 @@ public class Sync_servlet extends HttpServlet {
             case URL_SYNC_SETTER :
                 doSyncSetter(req, resp);
             break;
+                
+//            case URL_SYNC_ICON :
+//                doSyncIcons(req, resp);
+//            break;
         }
         
         
@@ -282,6 +290,9 @@ public class Sync_servlet extends HttpServlet {
                             
                         case URL_SYNC_SETTER :
                             return URL_SYNC_SETTER;                            
+                            
+//                        case URL_SYNC_ICON :
+//                            return URL_SYNC_ICON;                            
                             
                         case "" :                            
                         default:
@@ -613,8 +624,8 @@ public class Sync_servlet extends HttpServlet {
     
     private void doSyncSetter   (HttpServletRequest req, HttpServletResponse resp) {}
     
-    
-    
+   
+            
     private String getJsonData(ArrayList<ListeDetailFrontend> listes ) {
         
         String gloablJsonOutput = "";
@@ -824,48 +835,19 @@ public class Sync_servlet extends HttpServlet {
                         
         String srvName = request.getServerName();
         String srvPort = Integer.toString(request.getServerPort());
-            
-        log.debug("[srvName : srvPort] >> [" 
+        
+        String fullIconURL = "";
+        
+        log.info("[srvName : srvPort] >> [" 
                 + srvName + " : " + srvPort + "]" );                        
 
-
-//        String srvPath = this.getServletContext().getServerInfo();
-            
-//        log.debug("Try srvCtxt real path [/img] >> " + srvPath );                        
+        log.info("Icon Data Path is >> " + iconDataPath );   
         
-//        
-//        String realPath = this.getServletContext().getRealPath("/img");
-//            
-//        log.debug("Try srvCtxt real path [/img] >> " + realPath );                        
+        fullIconURL = "https://" + srvName + ":" + srvPort+ iconDataPath ;
         
-//        String out = this.getServletContext().getResourcePaths("/").toString();
-//            
-//        log.debug(" PRINT srvCtxt ressources paths List for [/] >> \n\n" 
-//                + out + "\n\n" );         
+        log.info("return fullIconUrl : >> " + fullIconURL);   
         
-                
-//        log.debug("Icon Data Folder is >> " + iconDataPath );   
-//        if ( ! iconDataPath.contains
-//                (realPath)  ) {
-//            log.debug("Adding real path [/] >> " + realPath );   
-//            iconDataPath = realPath + iconDataPath;
-//            
-//        }
-//        log.debug("Finally, Icon Data Folder is >> " + iconDataPath );   
-//        
-        log.debug("Icon Data Path is >> " + iconDataPath );   
-        if ( ! iconDataPath.contains
-                (srvName)  ) {
-//            log.debug("Adding real path [/] >> " + realPath );   
-            iconDataPath = "https://" 
-                + srvName + ":" + srvPort+ iconDataPath;
-            
-        }
-        log.info("Finally, Icon Data Path is >> " + iconDataPath );   
-        
-//        iconPathIsOK = true;
-        
-         return iconDataPath;
+         return fullIconURL;
     }    
         
      
@@ -985,17 +967,28 @@ public class Sync_servlet extends HttpServlet {
 ////                        str += "\n\t\t\t got PAIR [id / icon]:[" + produit.getPdtId() + " / " + produit.getPdtLink() + "]";                    
 ////                    }
                     
-                    addIconToCurrentMap(produit.getPdtId(), produit.getPdtLink());
+                    String buildedUrl = fullIconDataPath
+                        + (("GENERIC".equals(produit.getPdtProperty())) ? 
+                            "/generic/" 
+                            : "/members/"+getCurrentUserMail()+"/" )
+                        + produit.getPdtLink()
+                    ;
+                    
+                    
+                    
+                    addIconToCurrentMap(produit.getPdtId(), buildedUrl);
                     
                     
                     frontendProducts.add(new ProduitFrontend(qttObj, produit, catgObj, scatgObj , "marque", "distributeur"));
                     
-                    strLog += "\n\t\tJust added ProduitFrontend \tLABEL:[" + produit.getPdtNom()+ "]\t"
+//                    strLog += "\n\t\tJust added ProduitFrontend \tLABEL:[" + produit.getPdtNom()+ "]\t"
+                    log.info("\n\t\tJust added ProduitFrontend \tLABEL:[" + produit.getPdtNom()+ "]\t"
                         +  "\tCATG:[" + catgObj.getCtgLabel()+ "]"
                         +  "\tSCATG:[" + scatgObj.getSctgLabel()+ "]"
                         +  "\tUNIT:[" + qttObj.getQttMesure() + "]"
                         +  "\tVALUE:[" + qttObj.getQttQuantite() + "]"
-                        ;
+                        +  "\tIconURI:[" + buildedUrl + "]"
+                    );
                 }
                 
                 finalFrontendListes.add(new ListeDetailFrontend(liste, frontendProducts, esgnLabel));

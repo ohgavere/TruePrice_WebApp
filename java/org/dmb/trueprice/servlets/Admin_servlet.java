@@ -9,6 +9,7 @@ package org.dmb.trueprice.servlets;
  *
  * @author Work.In.Progress
  */
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -51,7 +52,8 @@ import org.dmb.trueprice.utils.internal.InitContextListener;
 //@MultipartConfig(location = "/upload"
 
 @MultipartConfig(
-        location = "C:\\TFE\\icons", 
+//        location = "C:\\TFE\\icons", 
+        location = "/home/gpc/trueprice/icons", 
         maxFileSize = 10485760L  // 10MB
 ) 
 public class Admin_servlet extends HttpServlet {
@@ -197,7 +199,7 @@ public class Admin_servlet extends HttpServlet {
 //        }
 
         globalForm  = new AdminHandler          ();
-        pdtGenForm  = new ProductGeneriqHandler (pdtCtl, iconDataFolder, sctgCtl, ctgCtl);
+        pdtGenForm  = new ProductGeneriqHandler (pdtCtl, iconDataFolder + File.separator + "generic", sctgCtl, ctgCtl);
         ctgForm     = new CategoryHandler       (ctgCtl);
         sctgForm    = new SubCategoryHandler    (sctgCtl, ctgCtl);
         ensForm     = new EnseigneHandler       (esgCtl);

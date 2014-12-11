@@ -11,7 +11,7 @@ package org.dmb.trueprice.objects;
  * @author Guitch
  */
 public class AvailableList extends ListHeader {
-
+    
     public AvailableList(Long listeId, String listeLabel, String date, int pdtCount) {
         super(listeId, listeLabel, date, pdtCount);
     }
@@ -20,4 +20,7 @@ public class AvailableList extends ListHeader {
         super(listeId, listeLabel, date);
     }    
     
+    public AvailableList(Long listeId, String listeLabel, int pdtCount) {
+        super(listeId, listeLabel, pdtCount);
+    }            
 }

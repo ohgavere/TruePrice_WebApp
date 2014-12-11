@@ -29,7 +29,14 @@ public abstract class ListHeader {
         this.listeLabel = listeLabel;
         this.date = date;        
     }
-
+    
+    public ListHeader(Long listeId, String listeLabel, int pdtCount) {
+        this.listeId = listeId;
+        this.listeLabel = listeLabel;
+        this.pdtCount = pdtCount;      
+    }
+    
+    
     public String getDate() {
         return date;
     }
@@ -46,7 +53,7 @@ public abstract class ListHeader {
         return pdtCount;
     }
     
-    protected void setDate(String date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

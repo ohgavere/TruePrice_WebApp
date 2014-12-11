@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Logger;
 import org.dmb.trueprice.entities.Membre;
 import static org.dmb.trueprice.filter.RestrictionFilter.ATT_SESSION_USER;
 import org.dmb.trueprice.utils.internal.FileUtils;
@@ -33,7 +34,8 @@ import org.dmb.trueprice.utils.internal.InitContextListener;
 @WebServlet(name = "Download_servlet", urlPatterns = {"/xml/*"})
 public class Download_servlet extends HttpServlet {
 
-            
+    private static final Logger log = InitContextListener.getLogger(Download_servlet.class) ;
+    
     private static final int DEFAULT_BUFFER_SIZE = 10240; // 10 ko
     private int TAILLE_TAMPON = 1024;
 
@@ -47,15 +49,20 @@ public class Download_servlet extends HttpServlet {
     private String xmlPublicDataFolder = "xmlPublicDataFolder";   
     private String xmlPublicDataPath = "xmlPublicDataPath";   
     
-    private String xmlRecoverDataFolder = "xmlRecoverDataFolder";   
+    private String xmlRecoverDataFolder = "xmlRecoverDataFolder";    
     
-    
+    private static final String att_iconDataPath = "iconDataPath";    
+    private static String iconDataFolder = "iconDataFolder";    
+    private String iconDataPath = "";
+    private Boolean iconPathIsOK = false;    
     
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config); //To change body of generated methods, choose Tools | Templates.
         
+        this.iconDataPath = InitContextListener.getEnvEntryValue(att_iconDataPath);   
+        this.iconDataFolder = InitContextListener.getEnvEntryValue(iconDataFolder);   
         
         this.xmlDataFolder = InitContextListener.getEnvEntryValue(xmlDataFolder);
         
@@ -86,11 +93,13 @@ public class Download_servlet extends HttpServlet {
             return;
         }
         
-        InitContextListener.getLogger(this.getClass())
-            .info("File asked [" + fichierRequis + "]");      
+        if (iconPathIsOK == false) { buildIconURL(request); }
+        
+        log.info("File asked [" + fichierRequis + "]");      
         
         String parentFolder = xmlDataFolder ;
         
+        // Si c'est un fichier dans un dossier personnel d'un user
         if (fichierRequis.startsWith(xmlMemberDataPath)) { 
         
             HttpSession session = request.getSession(false);
@@ -100,30 +109,28 @@ public class Download_servlet extends HttpServlet {
             parentFolder = xmlMemberDataFolder + File.separator + mb.getMbMail() ;
 
         }
+        // Si c'est un fichier dans le dossier XMl public
         else if (fichierRequis.startsWith(xmlPublicDataPath)) { parentFolder = xmlPublicDataFolder ; }
+//        else if (fichierRequis.startsWith(iconDataPath)) { parentFolder = iconFolder ;}
         
-        InitContextListener.getLogger(this.getClass())
-            .info("Parent folder : [" + parentFolder + "]");      
+        log.info("Parent folder : [" + parentFolder + "]");      
         
         /* Décode le nom de fichier récupéré, susceptible de contenir des espaces et autres caractères spéciaux, et prépare l'objet File */
         fichierRequis = URLDecoder.decode( fichierRequis, "UTF-8");
                 
-        InitContextListener.getLogger(this.getClass())
-            .info("Decoded File asked : [" + fichierRequis + "]");  
+        log.info("Decoded File asked : [" + fichierRequis + "]");  
         
         /*  Ne retenir que le nom du fichier + extension */
         fichierRequis = FilenameUtils.getName(fichierRequis);
                                 
-        InitContextListener.getLogger(this.getClass())
-            .info("Finally, file name is : [" + fichierRequis + "]");  
+        log.info("Finally, file name is : [" + fichierRequis + "]");  
         
         File fichier = new File( parentFolder, fichierRequis );
 
         /* Vérifie que le fichier existe bien */
         if ( !fichier.exists() ) {            
         
-        InitContextListener.getLogger(this.getClass())
-            .info("Can't find : [" + fichierRequis + "] in folder [" + parentFolder + "]");             
+        log.info("Can't find : [" + fichierRequis + "] in folder [" + parentFolder + "]");             
             
             /* Si non, alors on envoie une erreur 404, qui signifie que la ressource demandée n'existe pas */
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -183,5 +190,59 @@ public class Download_servlet extends HttpServlet {
     }
 
     
-    
+    /**
+     * Permet de construire iconDataPath lors de la 1e requete
+     * (iconDataPath initial récupéré dans init(config) ne contiens
+     * que le chemin relatif d'accès au dossier des images sur le serveur)
+     * @param request 
+     */
+//    private void buildIconURL(ServletRequest request) {       
+    private String buildIconURL(HttpServletRequest request) {       
+                        
+        String srvName = request.getServerName();
+        String srvPort = Integer.toString(request.getServerPort());
+            
+        log.debug("[srvName : srvPort] >> [" 
+                + srvName + " : " + srvPort + "]" );                        
+
+
+//        String srvPath = this.getServletContext().getServerInfo();
+            
+//        log.debug("Try srvCtxt real path [/img] >> " + srvPath );                        
+        
+//        
+//        String realPath = this.getServletContext().getRealPath("/img");
+//            
+//        log.debug("Try srvCtxt real path [/img] >> " + realPath );                        
+        
+//        String out = this.getServletContext().getResourcePaths("/").toString();
+//            
+//        log.debug(" PRINT srvCtxt ressources paths List for [/] >> \n\n" 
+//                + out + "\n\n" );         
+        
+                
+//        log.debug("Icon Data Folder is >> " + iconDataPath );   
+//        if ( ! iconDataPath.contains
+//                (realPath)  ) {
+//            log.debug("Adding real path [/] >> " + realPath );   
+//            iconDataPath = realPath + iconDataPath;
+//            
+//        }
+//        log.debug("Finally, Icon Data Folder is >> " + iconDataPath );   
+//        
+        log.debug("Icon Data Path is >> " + iconDataPath );   
+        if ( ! iconDataPath.contains
+                (srvName)  ) {
+//            log.debug("Adding real path [/] >> " + realPath );   
+            iconDataPath = "https://" 
+                + srvName + ":" + srvPort+ iconDataPath;
+            
+        }
+        log.info("Finally, Icon Data Path is >> " + iconDataPath );   
+        
+        iconPathIsOK = true;
+        
+         return iconDataPath;
+    }    
+        
 }

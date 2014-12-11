@@ -101,18 +101,20 @@ public final class ProductGeneriqHandler extends BasicHandler {
 //        int parentCount = 2 ;
        
 //        for (String key : map.getParameterMap().keySet()) {
-//            log.debug("Key [" + key + "] has value [" + 
+//            log.info("Key [" + key + "] has value [" + 
 //                    map.getParameter(key) + "]");
 //        }
         
         for (String attName : generiqFields) {
 
-            log.debug("Try to get Attr [" + attName + "]") ;
+            String strLog = "Try to get Attr [" + attName + "] .. got => [" ;
             
 //            String attValue = ServletUtils.getRequestAttrValue(request, attName);
             String attValue = map.getParameter(attName);
                 
+            strLog += " " + attValue + " ]";
             
+            log.info(strLog) ;
                 
             if ( attValue == null || "".equals(attValue)) {
                 
@@ -181,7 +183,7 @@ public final class ProductGeneriqHandler extends BasicHandler {
         if ( getErreurs().isEmpty()) {
 
             try {
-                log.debug("Parent is of type [" + fieldsValues.get(att_parentType) + "]");
+                log.info("Parent is of type [" + fieldsValues.get(att_parentType) + "]");
                 if (fieldsValues.get(att_parentType).equals("scatg")) {
                     
                      givenId = fieldsValues.get(att_parentSub) ;
@@ -199,11 +201,11 @@ public final class ProductGeneriqHandler extends BasicHandler {
                      givenId = fieldsValues.get(att_parent) ;
                      
                     Category c = ctgManager.findCategory(Integer.valueOf(givenId));
-//                    foundId = c.getCtgId();
-//                    foundLabel = c.getCtgLabel();
+                    foundId = c.getCtgId();
+                    foundLabel = c.getCtgLabel();
                     
-//                    pdt.setPdtCategory(foundId);
-                    pdt.setPdtCategory(c.getCtgId());
+                    pdt.setPdtCategory(foundId);
+//                    pdt.setPdtCategory(c.getCtgId());
                     
                 }
 //                log.info("Parent is of type [" + fieldsValues.get(att_parentType) + "] with ID [" + String.valueOf(foundId) + "]") ;

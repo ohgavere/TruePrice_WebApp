@@ -173,7 +173,7 @@ public final class RestrictionFilter implements Filter {
     }
     
     private String getUrlRedirectHttps(HttpServletRequest request){
-//            log.info("\t>>>\t not secured, redirecting...");
+            log.info("\t>>>\t not secured, redirecting...");
             
             String fullUrl = "https://" 
                     + request.getServerName()
@@ -505,26 +505,26 @@ public final class RestrictionFilter implements Filter {
         
 //        if (request.isSecure()) {
             
-            log.info("FILTERING REQUEST ==> Request is Secure() ? >     " + request.isSecure());
+//            log.info("FILTERING REQUEST ==> Request is Secure() ? >     " + request.isSecure());
             
             String scheme = "";
             scheme = request.getScheme();
             
-            log.info("FILTERING REQUEST ==>     Scheme          is      [" + scheme + "]");
+//            log.info("FILTERING REQUEST ==>     Scheme          is      [" + scheme + "]");
             
             String sslSessionId = "";
-            sslSessionId = ServletUtils.getRequestAttrValue(request, ATT_SSL_SESSION_ID) ;
+//            sslSessionId = ServletUtils.getRequestAttrValue(request, ATT_SSL_SESSION_ID) ;
             
 
             
             
             
-            if (sslSessionId != null) {
+            if (sslSessionId != "") {
             
-                log.info("FILTERING REQUEST ==>     ssl Session ID  is      [" + ( sslSessionId == "" ? "Value not found ...." : sslSessionId) + "]");                
+//                log.info("FILTERING REQUEST ==>     ssl Session ID  is      [" + ( sslSessionId == "" ? "Value not found ...." : sslSessionId) + "]");                
                 
             } else {
-                log.info("FILTERING REQUEST ==>     ssl Session ID  is  NULL !!");            
+//                log.info("FILTERING REQUEST ==>     ssl Session ID  is  NULL !!");            
             }
             
 //            String serverPort = "" ;
@@ -533,7 +533,7 @@ public final class RestrictionFilter implements Filter {
             
 //            if (serverPort != null) {
             
-                log.info("FILTERING REQUEST ==>     Server port     is      [" + serverPort + "]");                
+//                log.info("FILTERING REQUEST ==>     Server port     is      [" + serverPort + "]");                
                 
 //            }            
             
@@ -542,7 +542,7 @@ public final class RestrictionFilter implements Filter {
             
 //            if (serverPort != null) {
             
-                log.info("FILTERING REQUEST ==>     Request URL     is      [" + ( fullUrl == "" ? "Value not found ...." :  fullUrl) + "]");                
+//                log.info("FILTERING REQUEST ==>     Request URL     is      [" + ( fullUrl == "" ? "Value not found ...." :  fullUrl) + "]");                
                 
 //            }            
             
@@ -552,14 +552,14 @@ public final class RestrictionFilter implements Filter {
 //                    request.getRemoteUser() != null && 
                 if ( ! scheme.equals("https")) {
                     
-                    log.info("Scheme is not HTTPS : [" + scheme.toString() +"] > return false; ");
+//                    log.info("Scheme is not HTTPS : [" + scheme.toString() +"] > return false; ");
                     
                     return false;
                 } else if ( serverPort.compareTo(443) != 0 && serverPort.compareTo(8443) != 0 ) {
                     
-                    log.info("Server port is not 443 || 8443 > " + serverPort  
-                        + " -> compare to 8443 == [" + serverPort.compareTo(8443) 
-                        + "]  >>> return false ; " );
+//                    log.info("Server port is not 443 || 8443 > " + serverPort  
+//                        + " -> compare to 8443 == [" + serverPort.compareTo(8443) 
+//                        + "]  >>> return false ; " );
                     
                     return false;
                 } else {

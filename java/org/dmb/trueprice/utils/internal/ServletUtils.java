@@ -304,7 +304,40 @@ public abstract class ServletUtils {
             SyncInitResponse initResp = getMemberInitResponse(userMail);
             
 //            initResp.getAvailableLists().put(listeId, date);
-            initResp.getAvailableLists().add(liste);
+//            initResp.getAvailableLists().add(liste);
+            
+            Long idToRemove = null ;
+            int listeIndex  = -1 ;
+            
+            for (AvailableList loopListe : initResp.getAvailableLists()) {
+                if (Long.compare(loopListe.getListeId() , liste.getListeId()) == 0 ) {
+//                    initResp.getAvailableLists().remove(loopListe);
+                    idToRemove = loopListe.getListeId();
+                    listeIndex = initResp.getAvailableLists().indexOf(loopListe);
+                    break;
+                }
+            }
+            
+            log.error("addUpdateEntryToSyncInitResponse : " 
+                + "\n\t Remove : [" + idToRemove + "] / NbPdt: " 
+                    + (listeIndex == -1 ? "[NOT FOUND !!]" : initResp.getAvailableLists().get(listeIndex).getPdtCount())
+                + "\n\t Add    : [" + liste.getListeId() + "] / NbPdt: " + liste.getPdtCount()
+            );
+            
+            AvailableList removed = initResp.getAvailableLists().remove(listeIndex);
+            
+            String strLog = "";
+            
+            if (removed == null) {
+                strLog = "The List supposed to be removed was not found. Try to replace dates... Old value:[" 
+                    + initResp.getAvailableLists().get(listeIndex).getDate() + "]" ;
+                initResp.getAvailableLists().get(listeIndex).setDate(liste.getDate());
+            } else {
+                initResp.getAvailableLists().add(liste);
+                strLog = "The List was removed and new one added";
+            }
+            
+            if (strLog != "") { log.warn(strLog) ; }
             
 //            byte[] bytes = GsonConverter.toJsonTree(initResp).getBytes();
             byte[] bytes = GsonConverter.toJson(initResp).getBytes();
