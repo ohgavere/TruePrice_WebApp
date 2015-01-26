@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ProduitInfo.findByPdtInfoLastResult", query = "SELECT p FROM ProduitInfo p WHERE p.pdtInfoLastResult = :pdtInfoLastResult"),
     @NamedQuery(name = "ProduitInfo.findByPdtInfoBeforeLastResult", query = "SELECT p FROM ProduitInfo p WHERE p.pdtInfoBeforeLastResult = :pdtInfoBeforeLastResult"),
     @NamedQuery(name = "ProduitInfo.findByPdtInfoLastDate", query = "SELECT p FROM ProduitInfo p WHERE p.pdtInfoLastDate = :pdtInfoLastDate"),
-    @NamedQuery(name = "ProduitInfo.findByPdtInfoVeforeDate", query = "SELECT p FROM ProduitInfo p WHERE p.pdtInfoVeforeDate = :pdtInfoVeforeDate"),
+    @NamedQuery(name = "ProduitInfo.findByPdtInfoBeforeDate", query = "SELECT p FROM ProduitInfo p WHERE p.pdtInfoBeforeDate = :pdtInfoBeforeDate"),
     @NamedQuery(name = "ProduitInfo.findByPdtInfoRdcRvd", query = "SELECT p FROM ProduitInfo p WHERE p.pdtInfoRdcRvd = :pdtInfoRdcRvd"),
     @NamedQuery(name = "ProduitInfo.findByPdtInfoRdcFbq", query = "SELECT p FROM ProduitInfo p WHERE p.pdtInfoRdcFbq = :pdtInfoRdcFbq"),
     @NamedQuery(name = "ProduitInfo.findByPdtInfoRdcOther", query = "SELECT p FROM ProduitInfo p WHERE p.pdtInfoRdcOther = :pdtInfoRdcOther"),
@@ -75,9 +75,9 @@ public class ProduitInfo implements Serializable {
     @Column(name = "pdt_info_last_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date pdtInfoLastDate;
-    @Column(name = "pdt_info_vefore_date")
+    @Column(name = "pdt_info_before_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date pdtInfoVeforeDate;
+    private Date pdtInfoBeforeDate;
     @Size(max = 2147483647)
     @Column(name = "pdt_info_rdc_rvd")
     private String pdtInfoRdcRvd;
@@ -170,12 +170,12 @@ public class ProduitInfo implements Serializable {
         this.pdtInfoLastDate = pdtInfoLastDate;
     }
 
-    public Date getPdtInfoVeforeDate() {
-        return pdtInfoVeforeDate;
+    public Date getPdtInfoBeforeDate() {
+        return pdtInfoBeforeDate;
     }
 
-    public void setPdtInfoVeforeDate(Date pdtInfoVeforeDate) {
-        this.pdtInfoVeforeDate = pdtInfoVeforeDate;
+    public void setPdtInfoBeforeDate(Date pdtInfoBeforeDate) {
+        this.pdtInfoBeforeDate = pdtInfoBeforeDate;
     }
 
     public String getPdtInfoRdcRvd() {

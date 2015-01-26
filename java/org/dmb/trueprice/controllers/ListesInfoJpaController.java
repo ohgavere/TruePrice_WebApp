@@ -8,15 +8,18 @@ package org.dmb.trueprice.controllers;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.apache.log4j.Logger;
 import org.dmb.trueprice.controllers.exceptions.NonexistentEntityException;
+import org.dmb.trueprice.entities.Liste;
 import org.dmb.trueprice.entities.ListeInfo;
 import org.dmb.trueprice.utils.internal.InitContextListener;
 
@@ -24,11 +27,12 @@ import org.dmb.trueprice.utils.internal.InitContextListener;
  *
  * @author Guiitch
  */
+@Singleton
 public class ListesInfoJpaController implements Serializable {
 
 
     private static final Logger log 
-    = InitContextListener.getLogger( ProduitListeJpaController.class) ;
+    = InitContextListener.getLogger( ListesInfoJpaController.class) ;
     
     @PersistenceContext(unitName = "TruePrice_PersistenceUnit")
     private EntityManager       entManager;         
@@ -42,9 +46,9 @@ public class ListesInfoJpaController implements Serializable {
 //        return emf.createEntityManager();
 //    }
     
-    public ListesInfoJpaController(EntityManager entManager) {
-        this.entManager = entManager;
-    }
+//    public ListesInfoJpaController(EntityManager entManager) {
+//        this.entManager = entManager;
+//    }
     
     
 
@@ -157,5 +161,22 @@ public class ListesInfoJpaController implements Serializable {
 //            em.close();
         }
     }
+    
+    
+    public List<ListeInfo> findByUser( long userID ){
+        
+        List<ListeInfo> infos = null;
+        Query requete = entManager.createNamedQuery("ListesInfo.findByListesInfoUser");
+        requete.setParameter("listesInfoUser",userID);
+        try {
+            infos =  requete.getResultList();
+        } catch ( NoResultException e ) {
+            log.debug("User ID [" + userID + "] not found.");
+        }
+
+        return infos;
+        
+    }    
+        
     
 }

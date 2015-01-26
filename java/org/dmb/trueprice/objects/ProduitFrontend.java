@@ -115,6 +115,28 @@ public class ProduitFrontend extends Produit {
         setPdtSubcategory(pdt.getPdtSubcategory());
         setPdtSubproperty(pdt.getPdtSubproperty());
         setPdtMarque(pdt.getPdtMarque());    
+        setPdtTvaTaux(pdt.getPdtTvaTaux());
+        setPdtDtcreation(pdt.getPdtDtcreation());
+        setPdtPeriodPrefStart(pdt.getPdtPeriodPrefStart());
+        setPdtPeriodPrefStop(pdt.getPdtPeriodPrefStop());
+        setPdtEnsigne(pdt.getPdtEnsigne());
+        setPdtMarque(pdt.getPdtMarque());
+//        try {
+//            
+//            for (Field f : Produit.class.getFields()) {
+//          
+//                Field outField = this.getClass().getField(f.getName());
+//                Field inField = pdt.getClass().getField(f.getName());
+//                
+//                outField.set(this, inField.get(pdt));
+////                
+////                FieldUtils.writeField(this, f.getName(), );
+//
+//            }
+//            
+//        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+//            Logger.getLogger(ProduitFrontend.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }    
     
     

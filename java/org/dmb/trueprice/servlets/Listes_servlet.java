@@ -374,15 +374,17 @@ public class Listes_servlet extends HttpServlet {
     private ArrayList<ListeFrontend> getFrontendListEsgn(ArrayList<Liste> listMembersListes) {
     
         ArrayList<ListeFrontend> returned = new ArrayList<ListeFrontend>();
-            
-            String finalStrVilleShort = null ;
-            String finalStrEsgnFullLabel = null ;
-        
-            String esgnVilleShort = "" ;            
-            String esgnLabel = "";
-            String esgnVille = "";
 
-            for (Liste liste : listMembersListes) {
+        String finalStrVilleShort = null ;
+        String finalStrEsgnFullLabel = null ;
+
+        String esgnVilleShort = " " ;            
+        String esgnLabel = " ";
+        String esgnVille = " ";
+
+        for (Liste liste : listMembersListes) {
+            
+            String strLog = "Gonna search esgn label for liste [" + liste.getLstId() + "]";
             
             Enseigne esgn = esgnCtl.findEnseigne(liste.getLstEnseigne());            
             
@@ -399,10 +401,18 @@ public class Listes_servlet extends HttpServlet {
                 
                 finalStrVilleShort = esgnLabel + esgnVilleShort ;
                 finalStrEsgnFullLabel = esgnLabel + " : " + esgnVille ;     
-            
+                
+                // On en profite pour remplir la liste des enseignes
+                if (!listEsgnLabels.contains(finalStrEsgnFullLabel)) {
+                    listEsgnLabels.add(finalStrEsgnFullLabel);
+                }
+                
+                strLog += " ... found esgn label [" + finalStrEsgnFullLabel + "]" ;
+                
             } else {            
                 finalStrVilleShort = "" ;
                 finalStrEsgnFullLabel = "" ;     
+                strLog += " ... not found ... ";
             }
             
             // Chaque liste reconstruite pour display avec 
@@ -410,10 +420,7 @@ public class Listes_servlet extends HttpServlet {
                 // et le nbre de produit (dans le constructeur)
             returned.add(new ListeFrontend(liste, finalStrVilleShort));
             
-            // On en profite pour remplir la liste des enseignes
-            if (!listEsgnLabels.contains(finalStrEsgnFullLabel)) {
-                listEsgnLabels.add(finalStrEsgnFullLabel);
-            }
+            log.info(strLog);
                         
         }
         

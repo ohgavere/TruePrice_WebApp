@@ -58,7 +58,7 @@ public class ProduitListeJpaController implements Serializable {
     }
 
     public void edit(Produit produitListe) throws NonexistentEntityException, Exception {
-        EntityManager em = null;
+//        EntityManager em = null;
         try {
 //            em = getEntityManager();
 //            em.getTransaction().begin();

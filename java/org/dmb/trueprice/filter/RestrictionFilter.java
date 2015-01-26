@@ -68,6 +68,7 @@ public final class RestrictionFilter implements Filter {
     
     
     public static final String ACCES_SYNC  = "/sync"; // SYNC base URI
+    public static final String ACCES_STATS  = "/stats"; // SYNC base URI
     
     public static final String ACCES_REST  = "/rest"; // REST base URI
     public static final String ACCES_REST_LISTES  = "/listes"; // REST + LISTES
@@ -479,6 +480,7 @@ public final class RestrictionFilter implements Filter {
             | requestedUri.startsWith(ACCES_ADMIN)
             | requestedUri.startsWith(ACCES_XML_MEMBERS)
             | requestedUri.startsWith(ACCES_SYNC)                
+            | requestedUri.startsWith(ACCES_STATS)                
         ) {     return true;    } 
         
         return false;

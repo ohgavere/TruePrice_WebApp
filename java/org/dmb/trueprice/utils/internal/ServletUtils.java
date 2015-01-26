@@ -307,42 +307,57 @@ public abstract class ServletUtils {
 //            initResp.getAvailableLists().add(liste);
             
             Long idToRemove = null ;
-            int listeIndex  = -1 ;
+            int listeIndexToRemove  = -1 ;
             
             for (AvailableList loopListe : initResp.getAvailableLists()) {
                 if (Long.compare(loopListe.getListeId() , liste.getListeId()) == 0 ) {
 //                    initResp.getAvailableLists().remove(loopListe);
                     idToRemove = loopListe.getListeId();
-                    listeIndex = initResp.getAvailableLists().indexOf(loopListe);
+                    listeIndexToRemove = initResp.getAvailableLists().indexOf(loopListe);
                     break;
                 }
             }
             
-            log.error("addUpdateEntryToSyncInitResponse : " 
-                + "\n\t Remove : [" + idToRemove + "] / NbPdt: " 
-                    + (listeIndex == -1 ? "[NOT FOUND !!]" : initResp.getAvailableLists().get(listeIndex).getPdtCount())
-                + "\n\t Add    : [" + liste.getListeId() + "] / NbPdt: " + liste.getPdtCount()
-            );
-            
-            AvailableList removed = initResp.getAvailableLists().remove(listeIndex);
-            
             String strLog = "";
             
-            if (removed == null) {
-                strLog = "The List supposed to be removed was not found. Try to replace dates... Old value:[" 
-                    + initResp.getAvailableLists().get(listeIndex).getDate() + "]" ;
-                initResp.getAvailableLists().get(listeIndex).setDate(liste.getDate());
+            if (idToRemove != null && listeIndexToRemove >= 0) {
+            
+                log.error("addUpdateEntryToSyncInitResponse : " 
+                    + "\n\t Remove : [" + idToRemove + "] / NbPdt: " 
+                        + (listeIndexToRemove == -1 ? "[NOT FOUND !!]" : initResp.getAvailableLists().get(listeIndexToRemove).getPdtCount())
+                    + "\n\t Add    : [" + liste.getListeId() + "] / NbPdt: " + liste.getPdtCount()
+                );
+
+                AvailableList removed = initResp.getAvailableLists().remove(listeIndexToRemove);
+
+                if (removed == null) {
+                    strLog = "The List supposed to be removed was not found. Try to replace dates... Old value:[" 
+                        + initResp.getAvailableLists().get(listeIndexToRemove).getDate() + "]" ;
+                    initResp.getAvailableLists().get(listeIndexToRemove).setDate(liste.getDate());
+                }
+            
             } else {
                 initResp.getAvailableLists().add(liste);
-                strLog = "The List was removed and new one added";
+                strLog = "The List was added. Gonna write changes ...";
+            }
+
+            try {
+//            byte[] bytes = GsonConverter.toJsonTree(initResp).getBytes();
+                byte[] bytes = GsonConverter.toJson(initResp).getBytes();
+            
+                FileUtils.writeFile(SyncInitResponseFilename, bytes ,InitContextListener.getXmlMemberFullPath(userMail));
+            
+                strLog += " \t ... OK." ;
+                
+                log.info(strLog) ;
+                
+            } catch (Exception e) {
+                strLog += "... ... Failed ... " + e.getMessage() ;
+                log.error(strLog);
+                e.printStackTrace();
             }
             
-            if (strLog != "") { log.warn(strLog) ; }
-            
-//            byte[] bytes = GsonConverter.toJsonTree(initResp).getBytes();
-            byte[] bytes = GsonConverter.toJson(initResp).getBytes();
-            
-            FileUtils.writeFile(SyncInitResponseFilename, bytes ,InitContextListener.getXmlMemberFullPath(userMail));
+//            if (strLog != "") { log.info(strLog) ; }
             
         } catch (Exception e) {
             log.error("Could not write SyncInitResponse : \n" + e.getMessage());

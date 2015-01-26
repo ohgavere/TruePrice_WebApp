@@ -27,6 +27,8 @@ public class ListeDetailFrontend extends Liste {
     public ListeDetailFrontend( Liste liste, ArrayList<ProduitFrontend> productsObjects, String esgnLabel) {
         super(liste.getLstId(), liste.getLstUser(), liste.getLstLabel());
         
+        setEsgnLabel(esgnLabel);
+        
         setLstDescription(liste.getLstDescription());
         setLstEnseigne(liste.getLstEnseigne());
         // On les reprend quand meme au cas ou
@@ -34,7 +36,7 @@ public class ListeDetailFrontend extends Liste {
         // Les produits en Objects pour display + facile
         this.pdtFrontObjects = productsObjects;
         this.pdtCount = productsObjects == null ? 0 : (pdtFrontObjects.size() ) ;
-        this.esgnLabel = esgnLabel ;
+//        this.esgnLabel = esgnLabel ;
         
     }
     
