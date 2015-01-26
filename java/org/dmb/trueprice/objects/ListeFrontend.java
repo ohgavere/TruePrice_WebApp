@@ -60,16 +60,23 @@ public class ListeFrontend extends Liste {
     public ListeFrontend (Liste liste, String esgnLabel) {
         
         super(liste.getLstId(), liste.getLstUser(), liste.getLstLabel());
-        this.esgnLabel = esgnLabel; 
+        
+        if (esgnLabel != null && ! esgnLabel.trim().isEmpty()) {
+            this.esgnLabel = esgnLabel; 
+        }
          
         String desc = liste.getLstDescription();
-        // Si la description contiens une couleur on l'enlève
-        if (desc.contains("]")) {
-            desc = desc.substring(desc.indexOf("]")+1);
+
+        if (desc != null) {
+            
+            // Si la description contiens une couleur on l'enlève
+            if (desc.contains("]")) {
+                desc = desc.substring(desc.indexOf("]")+1);
+            }
+
+            setLstDescription(desc.length() > 0 ? desc : "<em>Aucune description</em>");
+                
         }
-        
-        setLstDescription(desc.length() > 0 ? desc : "<em>Aucune description</em>");
-        
         
         setLstEnseigne(liste.getLstEnseigne());
         // On les reprend quand meme au cas ou

@@ -9,17 +9,16 @@ import java.io.Serializable;
 import java.util.List;
 import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.transaction.UserTransaction;
 import org.apache.log4j.Logger;
 import org.dmb.trueprice.controllers.exceptions.NonexistentEntityException;
+import org.dmb.trueprice.controllers.exceptions.PreexistingEntityException;
 import org.dmb.trueprice.controllers.exceptions.RollbackFailureException;
-import org.dmb.trueprice.entities.ProduitStats;
+import org.dmb.trueprice.entities.ProduitResult;
 import org.dmb.trueprice.utils.internal.InitContextListener;
 
 /**
@@ -27,9 +26,9 @@ import org.dmb.trueprice.utils.internal.InitContextListener;
  * @author Guitch
  */
 @Singleton
-public class ProduitStatsJpaController implements Serializable {
+public class ProduitResultJpaController implements Serializable {
 
-//    public ProduitStatsJpaController(UserTransaction utx, EntityManagerFactory emf) {
+//    public ProduitResultJpaController(UserTransaction utx, EntityManagerFactory emf) {
 //        this.utx = utx;
 //        this.emf = emf;
 //    }
@@ -39,28 +38,30 @@ public class ProduitStatsJpaController implements Serializable {
 //    public EntityManager getEntityManager() {
 //        return emf.createEntityManager();
 //    }
-    
+
     private static final Logger log 
-    = InitContextListener.getLogger( ProduitStatsJpaController.class) ;
+    = InitContextListener.getLogger( ProduitResultJpaController.class) ;
     
     @PersistenceContext(unitName = "TruePrice_PersistenceUnit")
     private EntityManager       entManager;    
     
-
-    public void create(ProduitStats produitStats) throws RollbackFailureException, Exception {
+    public void create(ProduitResult produitResult) throws PreexistingEntityException, RollbackFailureException, Exception {
 //        EntityManager entManager = null;
         try {
 //            utx.begin();
 //            entManager = getEntityManager();
-            entManager.persist(produitStats);
+            entManager.persist(produitResult);
 //            utx.commit();
-//        } catch (Exception ex) {
+        } catch (Exception ex) {
 //            try {
-////                utx.rollback();
+//                utx.rollback();
 //            } catch (Exception re) {
 //                throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
 //            }
-//            throw ex;
+            if (findProduitResult(produitResult.getPdtResultId()) != null) {
+                throw new PreexistingEntityException("ProduitResult " + produitResult + " already exists.", ex);
+            }
+            throw ex;
         } finally {
 //            if (entManager != null) {
 //                entManager.close();
@@ -68,12 +69,12 @@ public class ProduitStatsJpaController implements Serializable {
         }
     }
 
-    public void edit(ProduitStats produitStats) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(ProduitResult produitResult) throws NonexistentEntityException, RollbackFailureException, Exception {
 //        EntityManager entManager = null;
         try {
 //            utx.begin();
 //            entManager = getEntityManager();
-            produitStats = entManager.merge(produitStats);
+            produitResult = entManager.merge(produitResult);
 //            utx.commit();
         } catch (Exception ex) {
 //            try {
@@ -83,9 +84,9 @@ public class ProduitStatsJpaController implements Serializable {
 //            }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = produitStats.getPdtStatsId();
-                if (findProduitStats(id) == null) {
-                    throw new NonexistentEntityException("The produitStats with id " + id + " no longer exists.");
+                Integer id = produitResult.getPdtResultId();
+                if (findProduitResult(id) == null) {
+                    throw new NonexistentEntityException("The produitResult with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -96,19 +97,19 @@ public class ProduitStatsJpaController implements Serializable {
         }
     }
 
-    public void destroy(Long id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
 //        EntityManager entManager = null;
         try {
 //            utx.begin();
-//            entManager = getEntityManager();        
-            ProduitStats produitStats;
+//            entManager = getEntityManager();
+            ProduitResult produitResult;
             try {
-                produitStats = entManager.getReference(ProduitStats.class, id);
-                produitStats.getPdtStatsId();
+                produitResult = entManager.getReference(ProduitResult.class, id);
+                produitResult.getPdtResultId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The produitStats with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The produitResult with id " + id + " no longer exists.", enfe);
             }
-            entManager.remove(produitStats);
+            entManager.remove(produitResult);
 //            utx.commit();
         } catch (Exception ex) {
 //            try {
@@ -124,21 +125,23 @@ public class ProduitStatsJpaController implements Serializable {
         }
     }
 
-    public List<ProduitStats> findProduitStatsEntities() {
-        return findProduitStatsEntities(true, -1, -1);
+    public List<ProduitResult> findProduitResultEntities() {
+        return findProduitResultEntities(true, -1, -1);
     }
 
-    public List<ProduitStats> findProduitStatsEntities(int maxResults, int firstResult) {
-        return findProduitStatsEntities(false, maxResults, firstResult);
+    public List<ProduitResult> findProduitResultEntities(int maxResults, int firstResult) {
+        return findProduitResultEntities(false, maxResults, firstResult);
     }
 
-    private List<ProduitStats> findProduitStatsEntities(boolean all, int maxResults, int firstResult) {
+    private List<ProduitResult> findProduitResultEntities(boolean all, int maxResults, int firstResult) {
 //        EntityManager entManager = getEntityManager();
         try {
 //            CriteriaQuery cq = entManager.getCriteriaBuilder().createQuery();
-//            cq.select(cq.from(ProduitStats.class));
+//            cq.select(cq.from(ProduitResult.class));
 //            Query q = entManager.createQuery(cq);
-            Query q = entManager.createNamedQuery("ProduitStats.findAll");
+            
+            Query q = entManager.createNamedQuery("ProduitResult.findAll");
+            
             if (!all) {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
@@ -149,29 +152,28 @@ public class ProduitStatsJpaController implements Serializable {
         }
     }
 
-    public ProduitStats findProduitStats(Long id) {
+    public ProduitResult findProduitResult(Integer id) {
 //        EntityManager entManager = getEntityManager();
         try {
-            return entManager.find(ProduitStats.class, id);
+            return entManager.find(ProduitResult.class, id);
         } finally {
 //            entManager.close();
         }
     }
 
-    public int getProduitStatsCount() {
+    public int getProduitResultCount() {
 //        EntityManager entManager = getEntityManager();
         try {
 //            CriteriaQuery cq = entManager.getCriteriaBuilder().createQuery();
-//            Root<ProduitStats> rt = cq.from(ProduitStats.class);
+//            Root<ProduitResult> rt = cq.from(ProduitResult.class);
 //            cq.select(entManager.getCriteriaBuilder().count(rt));
 //            Query q = entManager.createQuery(cq);
             
-            Query q = entManager.createNamedQuery("QttDetail.findAll");
-            
+            Query q = entManager.createNamedQuery("ProduitResult.findAll");            
             return (q.getResultList()).size();
             
         } finally {
-            entManager.close();
+//            entManager.close();
         }
     }
     

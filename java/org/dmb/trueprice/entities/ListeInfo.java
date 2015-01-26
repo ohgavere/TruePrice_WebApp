@@ -28,15 +28,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "listes_info", catalog = "TruePrice", schema = "public")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ListesInfo.findAll", query = "SELECT l FROM ListesInfo l"),
-    @NamedQuery(name = "ListesInfo.findByListesInfoId", query = "SELECT l FROM ListesInfo l WHERE l.listesInfoId = :listesInfoId"),
-    @NamedQuery(name = "ListesInfo.findByListesInfoListe", query = "SELECT l FROM ListesInfo l WHERE l.listesInfoListe = :listesInfoListe"),
-    @NamedQuery(name = "ListesInfo.findByListesInfoUser", query = "SELECT l FROM ListesInfo l WHERE l.listesInfoUser = :listesInfoUser"),
-    @NamedQuery(name = "ListesInfo.findByListesInfoLastDown", query = "SELECT l FROM ListesInfo l WHERE l.listesInfoLastDown = :listesInfoLastDown"),
-    @NamedQuery(name = "ListesInfo.findByListesInfoLastUp", query = "SELECT l FROM ListesInfo l WHERE l.listesInfoLastUp = :listesInfoLastUp"),
-    @NamedQuery(name = "ListesInfo.findByListesInfoLastEquals", query = "SELECT l FROM ListesInfo l WHERE l.listesInfoLastEquals = :listesInfoLastEquals"),
-    @NamedQuery(name = "ListesInfo.findByListesInfoLastRdcNb", query = "SELECT l FROM ListesInfo l WHERE l.listesInfoLastRdcNb = :listesInfoLastRdcNb"),
-    @NamedQuery(name = "ListesInfo.findByListesInfoLastRdcValue", query = "SELECT l FROM ListesInfo l WHERE l.listesInfoLastRdcValue = :listesInfoLastRdcValue")})
+    @NamedQuery(name = "ListesInfo.findAll", query = "SELECT l FROM ListeInfo l"),
+    @NamedQuery(name = "ListesInfo.findByListesInfoId", query = "SELECT l FROM ListeInfo l WHERE l.listesInfoId = :listesInfoId"),
+    @NamedQuery(name = "ListesInfo.findByListesInfoListe", query = "SELECT l FROM ListeInfo l WHERE l.listesInfoListe = :listesInfoListe"),
+    @NamedQuery(name = "ListesInfo.findByListesInfoUser", query = "SELECT l FROM ListeInfo l WHERE l.listesInfoUser = :listesInfoUser"),
+    @NamedQuery(name = "ListesInfo.findByListesInfoLastDown", query = "SELECT l FROM ListeInfo l WHERE l.listesInfoLastDown = :listesInfoLastDown"),
+    @NamedQuery(name = "ListesInfo.findByListesInfoLastUp", query = "SELECT l FROM ListeInfo l WHERE l.listesInfoLastUp = :listesInfoLastUp"),
+    @NamedQuery(name = "ListesInfo.findByListesInfoLastEquals", query = "SELECT l FROM ListeInfo l WHERE l.listesInfoLastEquals = :listesInfoLastEquals"),
+    @NamedQuery(name = "ListesInfo.findByListesInfoLastRdcNb", query = "SELECT l FROM ListeInfo l WHERE l.listesInfoLastRdcNb = :listesInfoLastRdcNb"),
+    @NamedQuery(name = "ListesInfo.findByListesInfoLastRdcValue", query = "SELECT l FROM ListeInfo l WHERE l.listesInfoLastRdcValue = :listesInfoLastRdcValue")})
 public class ListeInfo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

@@ -24,11 +24,30 @@ public class QttHandler extends BasicHandler {
     private static final Logger log = InitContextListener.getLogger(QttHandler.class) ;    
     
     private ProduitListeJpaController pdtManager ;
-    private QttDetailJpaController baseManager ;
+    private QttDetailJpaController qttManager ;
 
-    public QttHandler(ProduitListeJpaController pdtManager, QttDetailJpaController baseManager) {
+    public QttHandler(ProduitListeJpaController pdtManager, QttDetailJpaController qttManager) {
         this.pdtManager = pdtManager;
-        this.baseManager = baseManager;
+        this.qttManager = qttManager;
+    }
+    
+    
+    public QttDetail getQuantityDetailsById (Integer Id) {
+    
+        QttDetail qttReturned = null ;
+        
+        if (Id != null && Id > 0) {
+        
+            try {
+                return qttManager.findQttDetail(Id);
+            } catch (Exception e) {
+                log.error("Could not find the QttDetail with id [" + Id + "]");
+                e.printStackTrace();
+            }
+        
+        }
+    
+        return qttReturned ;
     }
     
     public QttDetail createRandomQtt() {

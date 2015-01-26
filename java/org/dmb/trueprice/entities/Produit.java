@@ -229,6 +229,8 @@ public class Produit implements Serializable {
     }
     
     
+    
+    
 
     @Override
     public int hashCode() {

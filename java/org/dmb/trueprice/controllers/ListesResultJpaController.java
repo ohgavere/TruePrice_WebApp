@@ -8,6 +8,7 @@ package org.dmb.trueprice.controllers;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
@@ -24,11 +25,12 @@ import org.dmb.trueprice.utils.internal.InitContextListener;
  *
  * @author Guiitch
  */
+@Singleton
 public class ListesResultJpaController implements Serializable {
     
 
     private static final Logger log 
-    = InitContextListener.getLogger( ProduitListeJpaController.class) ;
+    = InitContextListener.getLogger( ListesResultJpaController.class) ;
     
     @PersistenceContext(unitName = "TruePrice_PersistenceUnit")
     private EntityManager       entManager;         
@@ -41,9 +43,9 @@ public class ListesResultJpaController implements Serializable {
 //    public EntityManager getEntityManager() {
 //        return emf.createEntityManager();
 //    }
-    public ListesResultJpaController(EntityManager entManager) {
-        this.entManager = entManager;
-    }
+//    public ListesResultJpaController(EntityManager entManager) {
+//        this.entManager = entManager;
+//    }
 
     
     
