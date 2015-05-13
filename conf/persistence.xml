@@ -47,7 +47,7 @@
         
 	  <!-- C:\\TFE\\Logging\\openjpa.log -->
 	  <!-- ../Logs/TruePrice/openjpa.log -->
-      <property name="openjpa.Log" value="File=../logs/truePrice-openjpa-trace.log, DefaultLevel=TRACE, Runtime=INFO, Tool=INFO, SQL=TRACE"/>    
+      <property name="openjpa.Log" value="File=tomee/logs/truePrice-openjpa-trace.log, DefaultLevel=TRACE, Runtime=INFO, Tool=INFO, SQL=TRACE"/>    
       <!--<property name="openjpa.Log" value="File=../logs/truePrice-openjpa-warn.log, DefaultLevel=WARN, Runtime=WARN, Tool=ERROR, SQL=WARN"/>-->   
       <!--<class>org.dmb.trueprice.entities.Addresse</class>-->
       <!--<class>org.dmb.trueprice.entities.Utilisateur</class>-->
